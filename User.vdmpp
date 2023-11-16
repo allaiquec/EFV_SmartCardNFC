@@ -1,22 +1,20 @@
 class User
 types
   public documentNumber = token;
+  public documentType = <DNI> | <Passport>;
 
 instance variables
   private name: seq of char; 
-  private documentType: <Passport> | <DNI>;
+  private docType: documentType;
   private docNumber: documentNumber;
   private age: nat;
 
-
---pre newAge >= 0 No deja crear un objeto
-
 operations
-public User: documentNumber * nat ==> User
-  User(newId, newAge) == 
-    (docNumber:=newId;
-    age :=newAge;
-    return self
-    );
+public User: documentType * documentNumber ==> User
+  User(userDocType, newId) == 
+    (docType:= userDocType;
+      docNumber:= newId;
+      return self
+    )
   
 end User

@@ -45,8 +45,5 @@ operations
   GetCardNo() ==
     return cardNo;
 
-    
-
-
 end CardNFC
 

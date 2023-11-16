@@ -14,9 +14,9 @@ instance variables
 
   private CardNFCs: map CardNFC`CardId to CardNFC;
   private PurchaseHistory: seq of Purchase := [];
-  public day : nat1 := 1;
-  public month : nat1 := 1;
-  public year : nat := 2000; 
+  private day : nat1 := 1;
+  private month : nat1 := 1;
+  private year : nat := 2000; 
 
 inv forall p in set dom CardNFCs & CardNFCs(p).GetCardNo() = p; -- Correspomda el id con el objeto
 inv day >= 1 and day <= 31 and
@@ -32,7 +32,6 @@ public System: set of CardNFC ==> System
     CardNFCs := {p.GetCardNo() |-> p | p in set CardSet} --Id |-> objeto
 
 pre forall p,q in set CardSet & p <> q => p.GetCardNo() <> q.GetCardNo(); --R3
-
 
 public Transfer: CardNFC`CardId * CardNFC`CardId  ==> ()
 Transfer(fromId, toId) ==
