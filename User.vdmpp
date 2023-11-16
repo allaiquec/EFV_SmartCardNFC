@@ -1,0 +1,22 @@
+class User
+types
+  public documentNumber = token;
+
+instance variables
+  private name: seq of char; 
+  private documentType: <Passport> | <DNI>;
+  private docNumber: documentNumber;
+  private age: nat;
+
+
+--pre newAge >= 0 No deja crear un objeto
+
+operations
+public User: documentNumber * nat ==> User
+  User(newId, newAge) == 
+    (docNumber:=newId;
+    age :=newAge;
+    return self
+    );
+  
+end User

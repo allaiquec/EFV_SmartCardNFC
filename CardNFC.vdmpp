@@ -1,0 +1,52 @@
+class CardNFC
+
+types
+  public CardId = token;
+  public CardType = <scholar> | <general> | <personalized>;
+
+values
+  public ticketPrice: real = 1;
+
+instance variables
+  private balance: real;
+  private cardNo: CardId;
+  private user: User;
+  private cardType: CardType;
+  private oldBalance: real:= 0;
+
+operations
+--Constructor
+  public CardNFC : CardId * real * User ==> CardNFC
+  CardNFC (newId, startbal, newUser) ==
+    (cardNo := newId;
+    balance := startbal;
+    user := newUser);
+
+-- Recargas
+  public Recharge: real ==> () --recharge
+    Recharge(amount) ==
+      (oldBalance := balance; 
+      balance := balance + amount)
+    post balance = oldBalance + amount; -- R7
+
+--Pagos de pasajes
+  public Purchase: () ==> () -- purchase
+  Purchase() ==
+    balance := balance - ticketPrice
+    pre ticketPrice <= balance; -- R6
+
+--Ver saldo
+  public GetBalance: () ==> real
+  GetBalance() ==
+    return balance;
+
+-- Ver id del smart card
+  public GetCardNo: () ==> CardId
+  GetCardNo() ==
+    return cardNo;
+
+    
+
+
+end CardNFC
+

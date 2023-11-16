@@ -1,0 +1,46 @@
+class System 
+
+values
+  public amount :real = CardNFC`ticketPrice;
+
+types
+public Purchase ::
+    fromId : CardNFC`CardId
+    toId : CardNFC`CardId
+    amount : real
+    idPuchase : token; 
+
+instance variables
+
+  private CardNFCs: map CardNFC`CardId to CardNFC;
+  private PurchaseHistory: seq of Purchase := [];
+  public day : nat1 := 1;
+  public month : nat1 := 1;
+  public year : nat := 2000; 
+
+inv forall p in set dom CardNFCs & CardNFCs(p).GetCardNo() = p; -- Correspomda el id con el objeto
+inv day >= 1 and day <= 31 and
+month >= 1 and month <= 12 and
+(if month in set {4, 6, 9, 11} then day <= 30
+else if month = 2 then day <= 29
+else day <= 31);
+
+operations
+--Constructor
+public System: set of CardNFC ==> System
+    System(CardSet) ==
+    CardNFCs := {p.GetCardNo() |-> p | p in set CardSet} --Id |-> objeto
+
+pre forall p,q in set CardSet & p <> q => p.GetCardNo() <> q.GetCardNo(); --R3
+
+
+public Transfer: CardNFC`CardId * CardNFC`CardId  ==> ()
+Transfer(fromId, toId) ==
+    (CardNFCs(fromId).Purchase();
+    CardNFCs(toId).Recharge(amount);)
+
+pre {fromId, toId} subset dom CardNFCs and 
+    fromId <> toId and
+    CardNFCs(fromId).GetBalance() >= amount; --R8, R9, R6
+
+end System
