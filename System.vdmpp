@@ -14,11 +14,11 @@ instance variables
 
   private CardNFCs: map CardNFC`CardId to CardNFC;
   private PurchaseHistory: seq of Purchase := [];
-  private day : nat1 := 1;
-  private month : nat1 := 1;
-  private year : nat := 2000; 
+  public day : nat1 := 1;
+  public month : nat1 := 1;
+  public year : nat := 2000; 
 
-inv forall p in set dom CardNFCs & CardNFCs(p).GetCardNo() = p; -- Correspomda el id con el objeto
+inv forall p in set dom CardNFCs & CardNFCs(p).GetCardNo() = p; -- R1 Correspomda el id con el objeto
 inv day >= 1 and day <= 31 and
 month >= 1 and month <= 12 and
 (if month in set {4, 6, 9, 11} then day <= 30
@@ -31,7 +31,8 @@ public System: set of CardNFC ==> System
     System(CardSet) ==
     CardNFCs := {p.GetCardNo() |-> p | p in set CardSet} --Id |-> objeto
 
-pre forall p,q in set CardSet & p <> q => p.GetCardNo() <> q.GetCardNo(); --R3
+pre forall p,q in set CardSet & p <> q => p.GetCardNo() <> q.GetCardNo(); --R2
+
 
 public Transfer: CardNFC`CardId * CardNFC`CardId  ==> ()
 Transfer(fromId, toId) ==
@@ -40,6 +41,6 @@ Transfer(fromId, toId) ==
 
 pre {fromId, toId} subset dom CardNFCs and 
     fromId <> toId and
-    CardNFCs(fromId).GetBalance() >= amount; --R8, R9, R6
+    CardNFCs(fromId).GetBalance() >= amount; --R5, R6
 
 end System
